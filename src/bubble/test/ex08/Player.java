@@ -1,9 +1,8 @@
-package bubble.test.ex05;
+package bubble.test.ex08;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-import bubble.test.ex06.BackGroundPlayerService;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,6 +20,10 @@ public class Player extends JLabel implements Moveable {
 	private boolean right;
 	private boolean up;
 	private boolean down;
+	
+	// 벽에 충돌한 상태
+	private boolean leftWallCrash;
+	private boolean rightWallCrash;
 
 	private final int SPEED = 4;
 	private final int JUMPSPEED = 2; // up, down
@@ -30,6 +33,7 @@ public class Player extends JLabel implements Moveable {
 	public Player() {
 		initObject();
 		initSetting();
+		initBackgroundPlayerService();
 	}
 
 	private void initObject() {
@@ -38,20 +42,25 @@ public class Player extends JLabel implements Moveable {
 	}
 
 	private void initSetting() {
-		x = 55;
+		x = 80;
 		y = 535;
 
 		left = false;
 		right = false;
 		up = false;
 		down = false;
+		
+		leftWallCrash = false;
+		rightWallCrash = false;
 
 		setIcon(playerR);
 		setSize(50, 50);
 		setLocation(x, y);
 	}
 	
-	
+	private void initBackgroundPlayerService() {
+		new Thread(new BackGroundPlayerService(this)).start();
+	}
 
 	// EventHandler
 	@Override
